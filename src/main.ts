@@ -13,7 +13,10 @@ const resetBtn = document.getElementById("reset") as HTMLButtonElement;
 const SAMPLE_STEP = 6;
 const HIT_RADIUS = 38;
 const COMPLETE_THRESHOLD = 0.85;
-const COLORS = ["#ff7ab6", "#ffb84a", "#4ad295", "#6aa9ff", "#c084fc", "#ff8a8a"];
+const COLORS = ["#58cc02", "#1cb0f6", "#ffc800", "#ff9600", "#ce82ff", "#ff4b4b"];
+const DUO_GREEN = "#58cc02";
+const DUO_GREY = "#e5e5e5";
+const DUO_INK = "#3c3c3c";
 
 type Confetto = { x: number; y: number; vx: number; vy: number; color: string; rot: number; vr: number; life: number };
 
@@ -130,8 +133,7 @@ function draw() {
     ctx.save();
     ctx.lineWidth = 32; ctx.lineCap = "round"; ctx.lineJoin = "round";
     ctx.setLineDash(isDone ? [] : [2, 22]);
-    ctx.strokeStyle = isDone ? "#4ad295" : isCurrent ? "#2d3a4a" : "#c5cdd9";
-    if (isDone) { ctx.shadowColor = "#4ad29588"; ctx.shadowBlur = 12; }
+    ctx.strokeStyle = isDone ? DUO_GREEN : isCurrent ? DUO_INK : DUO_GREY;
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
     for (const pt of pts) ctx.lineTo(pt.x, pt.y);
@@ -141,10 +143,10 @@ function draw() {
     if (isCurrent) {
       // green coverage trail
       ctx.save();
-      ctx.fillStyle = "#4ad295";
+      ctx.fillStyle = DUO_GREEN;
       pts.forEach((pt, i) => {
         if (covered[si][i]) {
-          ctx.beginPath(); ctx.arc(pt.x, pt.y, 11, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(pt.x, pt.y, 12, 0, Math.PI * 2); ctx.fill();
         }
       });
       ctx.restore();
