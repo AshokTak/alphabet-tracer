@@ -29,7 +29,7 @@ export const LETTERS: LetterDef[] = [
     [p(0.28, 0.50), ...arc(0.28, 0.70, 0.36, 0.20, -Math.PI / 2, Math.PI / 2), p(0.28, 0.90)],
   ]},
   { char: "C", strokes: [
-    arc(0.52, 0.50, 0.34, 0.40, -Math.PI / 4, Math.PI / 4 + Math.PI, 28),
+    arc(0.52, 0.50, 0.34, 0.40, -Math.PI / 4, -Math.PI / 4 - Math.PI * 1.5, 32),
   ]},
   { char: "D", strokes: [
     line(p(0.25, 0.1), p(0.25, 0.9)),
@@ -44,8 +44,8 @@ export const LETTERS: LetterDef[] = [
     line(p(0.22, 0.50), p(0.62, 0.50)),
   ]},
   { char: "G", strokes: [
-    arc(0.52, 0.50, 0.34, 0.40, -Math.PI / 4, Math.PI / 4 + Math.PI, 28),
-    line(p(0.86, 0.40), p(0.86, 0.55), p(0.62, 0.55)),
+    arc(0.52, 0.50, 0.34, 0.40, -Math.PI / 4, -Math.PI / 4 - Math.PI * 1.5, 32),
+    line(p(0.76, 0.78), p(0.76, 0.55), p(0.56, 0.55)),
   ]},
   { char: "H", strokes: [
     line(p(0.22, 0.10), p(0.22, 0.90)),
@@ -104,7 +104,7 @@ export const LETTERS: LetterDef[] = [
     line(p(0.50, 0.10), p(0.50, 0.90)),
   ]},
   { char: "U", strokes: [
-    [p(0.20, 0.10), p(0.20, 0.65), ...arc(0.50, 0.65, 0.30, 0.25, Math.PI, Math.PI * 2, 20), p(0.80, 0.10)],
+    [p(0.20, 0.10), p(0.20, 0.65), ...arc(0.50, 0.65, 0.30, 0.25, Math.PI, 0, 22), p(0.80, 0.10)],
   ]},
   { char: "V", strokes: [
     line(p(0.18, 0.10), p(0.50, 0.90), p(0.82, 0.10)),

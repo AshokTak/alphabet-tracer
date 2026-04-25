@@ -11,7 +11,7 @@ const nextBtn = document.getElementById("next") as HTMLButtonElement;
 const resetBtn = document.getElementById("reset") as HTMLButtonElement;
 
 const SAMPLE_STEP = 6;
-const HIT_RADIUS = 38;
+const HIT_RADIUS = 44;
 const COMPLETE_THRESHOLD = 0.85;
 const COLORS = ["#58cc02", "#1cb0f6", "#ffc800", "#ff9600", "#ce82ff", "#ff4b4b"];
 const DUO_GREEN = "#58cc02";
@@ -129,24 +129,37 @@ function draw() {
     const isCurrent = si === strokeIdx;
     const isDone = si < strokeIdx;
 
-    // dotted guide
+    // bubble guide: outer outline + inner fill
+    const drawPath = () => {
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (const pt of pts) ctx.lineTo(pt.x, pt.y);
+    };
     ctx.save();
-    ctx.lineWidth = 32; ctx.lineCap = "round"; ctx.lineJoin = "round";
-    ctx.setLineDash(isDone ? [] : [2, 22]);
-    ctx.strokeStyle = isDone ? DUO_GREEN : isCurrent ? DUO_INK : DUO_GREY;
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
-    for (const pt of pts) ctx.lineTo(pt.x, pt.y);
-    ctx.stroke();
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    if (isDone) {
+      ctx.lineWidth = 56; ctx.strokeStyle = "#58a700"; drawPath(); ctx.stroke();
+      ctx.lineWidth = 46; ctx.strokeStyle = DUO_GREEN; drawPath(); ctx.stroke();
+    } else if (isCurrent) {
+      ctx.lineWidth = 56; ctx.strokeStyle = "#cfcfcf"; drawPath(); ctx.stroke();
+      ctx.lineWidth = 46; ctx.strokeStyle = "#ffffff"; drawPath(); ctx.stroke();
+      ctx.setLineDash([2, 26]);
+      ctx.lineWidth = 8; ctx.strokeStyle = DUO_INK; drawPath(); ctx.stroke();
+    } else {
+      ctx.lineWidth = 56; ctx.strokeStyle = DUO_GREY; drawPath(); ctx.stroke();
+      ctx.lineWidth = 46; ctx.strokeStyle = "#f7f7f7"; drawPath(); ctx.stroke();
+    }
     ctx.restore();
 
     if (isCurrent) {
       // green coverage trail
       ctx.save();
-      ctx.fillStyle = DUO_GREEN;
       pts.forEach((pt, i) => {
         if (covered[si][i]) {
-          ctx.beginPath(); ctx.arc(pt.x, pt.y, 12, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "#58a700";
+          ctx.beginPath(); ctx.arc(pt.x, pt.y, 22, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = DUO_GREEN;
+          ctx.beginPath(); ctx.arc(pt.x, pt.y, 18, 0, Math.PI * 2); ctx.fill();
         }
       });
       ctx.restore();
