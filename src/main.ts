@@ -264,17 +264,40 @@ function finishLevel() {
   setTimeout(() => loadLevel(levelIdx + 1), 1800);
 }
 
+const LETTER_WORDS: Record<string, string> = {
+  A: "Apple", B: "Ball", C: "Cat", D: "Dog", E: "Elephant", F: "Fish",
+  G: "Goat", H: "Hat", I: "Igloo", J: "Juice", K: "Kite", L: "Lion",
+  M: "Monkey", N: "Nest", O: "Orange", P: "Penguin", Q: "Queen", R: "Rabbit",
+  S: "Sun", T: "Tiger", U: "Umbrella", V: "Van", W: "Whale", X: "Xylophone",
+  Y: "Yak", Z: "Zebra",
+};
+
+let speechReady = false;
+function primeSpeech() {
+  if (speechReady) return;
+  speechReady = true;
+  try {
+    const u = new SpeechSynthesisUtterance("");
+    u.volume = 0;
+    window.speechSynthesis.speak(u);
+  } catch {}
+}
+
 function speakLetter(ch: string) {
   try {
     const synth = window.speechSynthesis;
     if (!synth) return;
+    const word = LETTER_WORDS[ch] ?? ch;
+    const phrase = `${ch}. ${ch} for ${word}.`;
     setTimeout(() => {
-      const u = new SpeechSynthesisUtterance(ch);
+      const u = new SpeechSynthesisUtterance(phrase);
       u.lang = "en-US";
       u.rate = 0.85;
-      u.pitch = 1.2;
+      u.pitch = 1.15;
       const voices = synth.getVoices();
-      const kid = voices.find((v) => /child|kid|samantha|karen|google us english/i.test(v.name));
+      const kid = voices.find((v) =>
+        /child|kid|samantha|karen|google us english|microsoft zira|microsoft aria/i.test(v.name)
+      );
       if (kid) u.voice = kid;
       synth.cancel();
       synth.speak(u);
@@ -298,6 +321,7 @@ function beep(freq: number) {
 }
 
 canvas.addEventListener("pointerdown", (e) => {
+  primeSpeech();
   if (lockInput) return;
   drawing = true;
   canvas.setPointerCapture(e.pointerId);
@@ -315,9 +339,10 @@ canvas.addEventListener("pointerup", endStroke);
 canvas.addEventListener("pointercancel", endStroke);
 canvas.addEventListener("pointerleave", endStroke);
 
-prevBtn.addEventListener("click", () => loadLevel(levelIdx - 1));
-nextBtn.addEventListener("click", () => loadLevel(levelIdx + 1));
-resetBtn.addEventListener("click", () => loadLevel(levelIdx));
+prevBtn.addEventListener("click", () => { primeSpeech(); loadLevel(levelIdx - 1); });
+nextBtn.addEventListener("click", () => { primeSpeech(); loadLevel(levelIdx + 1); });
+resetBtn.addEventListener("click", () => { primeSpeech(); loadLevel(levelIdx); });
+levelBar.addEventListener("click", () => primeSpeech());
 
 window.addEventListener("resize", fitCanvas);
 fitCanvas();
