@@ -242,8 +242,27 @@ function finishLevel() {
   promptEl.classList.add("celebrate");
   spawnConfetti();
   beep(880); setTimeout(() => beep(1100), 150); setTimeout(() => beep(1320), 300);
+  speakLetter(LETTERS[levelIdx].char);
   buildLevelBar();
   setTimeout(() => loadLevel(levelIdx + 1), 1800);
+}
+
+function speakLetter(ch: string) {
+  try {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    setTimeout(() => {
+      const u = new SpeechSynthesisUtterance(ch);
+      u.lang = "en-US";
+      u.rate = 0.85;
+      u.pitch = 1.2;
+      const voices = synth.getVoices();
+      const kid = voices.find((v) => /child|kid|samantha|karen|google us english/i.test(v.name));
+      if (kid) u.voice = kid;
+      synth.cancel();
+      synth.speak(u);
+    }, 500);
+  } catch {}
 }
 
 let audioCtx: AudioContext | null = null;
