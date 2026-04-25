@@ -69,6 +69,8 @@ function buildLevelBar() {
     d.addEventListener("click", () => loadLevel(i));
     levelBar.appendChild(d);
   });
+  const active = levelBar.querySelector(".level-dot.active") as HTMLElement | null;
+  if (active) active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
 }
 
 function loadLevel(idx: number, animate = true) {
