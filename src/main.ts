@@ -286,7 +286,30 @@ function finishLevel() {
   beep(880); setTimeout(() => beep(1100), 150); setTimeout(() => beep(1320), 300);
   speakLetter(LETTERS[levelIdx].char);
   buildLevelBar();
-  setTimeout(() => loadLevel(levelIdx + 1), 1800);
+  if (completed.size >= LETTERS.length) {
+    setTimeout(showFinishOverlay, 2200);
+  } else {
+    setTimeout(() => loadLevel(levelIdx + 1), 1800);
+  }
+}
+
+const overlay = document.getElementById("finishOverlay")!;
+(document.getElementById("overlayAgain") as HTMLButtonElement).addEventListener("click", () => {
+  completed.clear();
+  overlay.classList.add("hidden");
+  loadLevel(0);
+});
+(document.getElementById("overlayMore") as HTMLButtonElement).addEventListener("click", () => {
+  location.href = "/kid-games/";
+});
+function showFinishOverlay() {
+  overlay.classList.remove("hidden");
+  speakLetter("");
+  try { window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance("Yay! You learnt all the alphabets!");
+    u.rate = 0.9; u.pitch = 1.2;
+    window.speechSynthesis.speak(u);
+  } catch {}
 }
 
 const LETTER_WORDS: Record<string, string> = {
