@@ -289,7 +289,7 @@ function finishLevel() {
   if (completed.size >= LETTERS.length) {
     setTimeout(showFinishOverlay, 2200);
   } else {
-    setTimeout(() => loadLevel(levelIdx + 1), 1800);
+    setTimeout(() => loadLevel(levelIdx + 1), 3500);
   }
 }
 
